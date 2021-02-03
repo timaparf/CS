@@ -1,0 +1,7 @@
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\bin\Debug\Task2.exe.config
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\bin\Debug\Task2.exe
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\bin\Debug\Task2.pdb
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\obj\Debug\Task2.csprojAssemblyReference.cache
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\obj\Debug\Task2.csproj.CoreCompileInputs.cache
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\obj\Debug\Task2.exe
+I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\Task2\Task2\obj\Debug\Task2.pdb
