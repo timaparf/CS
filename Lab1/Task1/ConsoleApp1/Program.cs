@@ -64,8 +64,8 @@ namespace ConsoleApp1
             FileInfo file = new FileInfo(path);
             double amountOfInformation;
             Console.WriteLine("Entropy (bits): {0:F4}", entropy);
-            Console.WriteLine("Ammount of information (bits): {0:F4}", entropy * countOfAllLetters); // Множимо на к-сть символів тексту, а не алфавіту
-            Console.WriteLine("Ammount of information (bytes): {0:F4}\n", amountOfInformation = entropy * countOfAllLetters / 8); // 1байт = 8бит
+            Console.WriteLine("Ammount of information (bits): {0:F4}", entropy * countOfAllLetters); 
+            Console.WriteLine("Ammount of information (bytes): {0:F4}\n", amountOfInformation = entropy * countOfAllLetters / 8); 
             Console.WriteLine("Filesize: {0} bytes", file.Length);
             return amountOfInformation;
         }
@@ -133,10 +133,10 @@ namespace ConsoleApp1
             path = path + Console.ReadLine();
 
             string text = ReadFile(path);
-            CountLetters(array, text, out countOfAllLetters, alphabet); // Масив з кількістю окремої літери та частотою її появи у тексті
-            CountFrequency(array, countOfAllLetters); // Рахуємо частоту появи літер у тексті
-            double amountOfInformation = GetInfo(array, path, countOfAllLetters); // Рахуємо eнтропію та кількість інфомації
-           CompareWithSizeOfArchive(amountOfInformation, path); // Порівнюємо розміри архівів
+            CountLetters(array, text, out countOfAllLetters, alphabet); 
+            CountFrequency(array, countOfAllLetters); 
+            double amountOfInformation = GetInfo(array, path, countOfAllLetters);
+           //CompareWithSizeOfArchive(amountOfInformation, path); 
             PrintArray(array, alphabet);
 
             Console.ReadLine();
