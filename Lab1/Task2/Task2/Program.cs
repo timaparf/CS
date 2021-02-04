@@ -9,9 +9,65 @@ namespace Task2
 {
     static class Program
     {
-        public static void CharactProbability(Dictionary<char, double> chrcts, int totalCount)
+        static void Main(string[] args)
         {
-            //The number of keys in the dictionary
+
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+            string folderpath = @"I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\";
+            string textFile;
+            char[] encodeText;
+            int totalCountCharacters;
+            long fileSize;
+            double entropy, infoQuant;
+            Dictionary<char, double> characters = new Dictionary<char, double>();
+            Base64Encrypt base64;
+
+
+            Console.Write("Enter the name of text file: ");
+            textFile = Console.ReadLine();
+            Console.WriteLine();
+
+
+            var path = folderpath + textFile + ".txt";
+
+            Console.WriteLine("Original file:");
+            fileSize = ReadFile(path, characters, out totalCountCharacters);
+            Probability(characters, totalCountCharacters);
+            entropy = Entropy(characters);
+            infoQuant = Quantity(entropy, totalCountCharacters);
+            PrintInfo(infoQuant, fileSize);
+
+
+            fileSize = ReadFile(folderpath + textFile + "_64.txt", characters, out totalCountCharacters);
+            Probability(characters, totalCountCharacters);
+            entropy = Entropy(characters);
+            infoQuant = Quantity(entropy, totalCountCharacters);
+
+            base64 = new Base64Encrypt(GetTextInBytes(path));
+            encodeText = base64.GetEncoded();
+
+            string encryptRow = new string(encodeText);
+            WriteFile(folderpath + textFile + "_64.txt", encryptRow);
+
+            Console.WriteLine("Check Encoding: ");
+            Console.WriteLine(CheckEncoding(path));
+            Console.WriteLine("Encoded File Info:");
+            PrintInfo(infoQuant, fileSize);
+            Console.WriteLine("My Base64 encodeing: ");
+            Console.WriteLine(encryptRow);
+
+            Console.WriteLine("Archived File Info:");
+            fileSize = ReadFile(folderpath + textFile + "_64.txt.bz2", characters, out totalCountCharacters);
+            Probability(characters, totalCountCharacters);
+            entropy = Entropy(characters);
+            PrintInfo(Quantity(entropy, totalCountCharacters), fileSize);
+
+            Console.ReadLine();
+
+        }
+        public static void Probability(Dictionary<char, double> chrcts, int totalCount)
+        {
             int countKeysDict = chrcts.Keys.Count;
             char[] keysDict = new char[countKeysDict];
             chrcts.Keys.CopyTo(keysDict, 0);
@@ -22,7 +78,7 @@ namespace Task2
             }
         }
 
-        public static double AvrgEntropy(Dictionary<char, double> chrcts)
+        public static double Entropy(Dictionary<char, double> chrcts)
         {
             int countChrct = chrcts.Keys.Count;
             char[] keysDict = new char[countChrct];
@@ -37,25 +93,16 @@ namespace Task2
             return entropy;
         }
 
-        public static double InfoQuantity(double entrp, int chrctCount)
+        public static double Quantity(double entrp, int chrctCount)
         {
             return entrp * chrctCount;
         }
 
-        public static void Print(double infoQuant, long fileSize)
+        public static void PrintInfo(double infoQuant, long fileSize)
         {
             Console.WriteLine("Size of file = {0} bytes", fileSize);
             Console.WriteLine("Info Quantity = {0} bytes", infoQuant / 8);
             Console.WriteLine("Info Quantity = {0} bits\n", infoQuant);
-        }
-
-        public static void Print(double infoQuant, long fileSize, string base64Text)
-        {
-            Console.WriteLine("Size of file = {0} bytes", fileSize);
-            Console.WriteLine("Info Quantity = {0} bytes", infoQuant / 8);
-            Console.WriteLine("Info Quantity = {0} bits\n", infoQuant);
-            Console.WriteLine(base64Text);
-            Console.WriteLine();
         }
 
         public static long ReadFile(string pathFile, Dictionary<char, double> chrcts, out int totalCountChrcts)
@@ -110,63 +157,8 @@ namespace Task2
 
             return base64Text;
         }
-        static void Main(string[] args)
-        {
-            {
-                Console.OutputEncoding = System.Text.Encoding.Unicode;
-
-                string folderpath = @"I:\Google Drive\Навчання\Комп'ютерні системи\Lab1\";
-                string textFile;
-                char[] encodeText;
-                int totalCountCharacters;
-                long fileSize;
-                double entropy, infoQuant;
-                Dictionary<char, double> characters = new Dictionary<char, double>();
-                Base64Encrypt base64;
-
-                Console.Write("Enter the name of text file: ");
-                textFile = Console.ReadLine();
-                Console.WriteLine();
 
 
-                var path = folderpath + textFile + ".txt";
-
-               // Console.WriteLine("Original file:");
-                fileSize = ReadFile(path, characters, out totalCountCharacters);
-                CharactProbability(characters, totalCountCharacters);
-                entropy = AvrgEntropy(characters);
-                infoQuant = InfoQuantity(entropy, totalCountCharacters);
-                //Print(infoQuant, fileSize);
-
-
-                fileSize = ReadFile(folderpath + textFile + "_64.txt", characters, out totalCountCharacters);
-                CharactProbability(characters, totalCountCharacters);
-                entropy = AvrgEntropy(characters);
-                infoQuant = InfoQuantity(entropy, totalCountCharacters);
-
-                base64 = new Base64Encrypt(GetTextInBytes(path));
-                encodeText = base64.GetEncoded();
-
-                string encryptRow = new string(encodeText);
-                WriteFile(folderpath + textFile + "_64.txt", encryptRow);
-                
-                //Console.WriteLine("Check Encoding: ");
-                //Console.WriteLine(CheckEncoding(path));
-                //Console.WriteLine("Encoded File Info:");
-                //Print(infoQuant, fileSize);
-                //Console.WriteLine("My Base64 encodeing: ");
-                //Console.WriteLine(encryptRow);
-
-                Console.WriteLine("Archived File Info:");
-                fileSize = ReadFile(folderpath + textFile + "_64.txt.bz2", characters, out totalCountCharacters);
-                CharactProbability(characters, totalCountCharacters);
-                entropy = AvrgEntropy(characters);
-                infoQuant = InfoQuantity(entropy, totalCountCharacters);
-                Print(infoQuant, fileSize);
-
-                Console.ReadLine();
-            }
-        }
 
     }
 }
