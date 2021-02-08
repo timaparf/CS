@@ -9,10 +9,10 @@ namespace ConsoleApp1
 {
     class Program
     {
-        static string alphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ ,.-!?:;()абвгґдеєжзиіїйклмнопрстуфхцчшщьюя ,.-!?:;()";
+        static string alphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ ,.-!?:;()\nабвгґдеєжзиіїйклмнопрстуфхцчшщьюя ,.-!?:;()\n";
 
 
-        static void CompareWithSizeOfArchive(double amountOfInformation, string path)
+        static void Archive(double amountOfInformation, string path)
         {
             string[] archive = new string[] { 
                 ".rar", 
@@ -136,7 +136,7 @@ namespace ConsoleApp1
             CountLetters(array, text, out countOfAllLetters, alphabet); 
             CountFrequency(array, countOfAllLetters); 
             double amountOfInformation = GetInfo(array, path, countOfAllLetters);
-           //CompareWithSizeOfArchive(amountOfInformation, path); 
+           //Archive(amountOfInformation, path); 
             PrintArray(array, alphabet);
 
             Console.ReadLine();

@@ -32,41 +32,52 @@ namespace Task2
             var path = folderpath + textFile + ".txt";
 
             Console.WriteLine("Original file:");
-            fileSize = ReadFile(path, characters, out totalCountCharacters);
-            Probability(characters, totalCountCharacters);
+            fileSize = GetFileSize(path, characters, out totalCountCharacters);
+
+            CountProbability(characters, totalCountCharacters);
             entropy = Entropy(characters);
-            infoQuant = Quantity(entropy, totalCountCharacters);
-            PrintInfo(infoQuant, fileSize);
+            infoQuant = entropy * totalCountCharacters;
+
+            Console.WriteLine("Size of file = {0} bytes", fileSize);
+            Console.WriteLine("Info Quantity = {0} bytes", infoQuant / 8);
+            Console.WriteLine("Info Quantity = {0} bits\n", infoQuant);
 
 
-            fileSize = ReadFile(folderpath + textFile + "_64.txt", characters, out totalCountCharacters);
-            Probability(characters, totalCountCharacters);
+            fileSize = GetFileSize(folderpath + textFile + "_64.txt", characters, out totalCountCharacters);
+            CountProbability(characters, totalCountCharacters);
             entropy = Entropy(characters);
-            infoQuant = Quantity(entropy, totalCountCharacters);
+            infoQuant = entropy * totalCountCharacters;
 
             base64 = new Base64Encrypt(GetTextInBytes(path));
             encodeText = base64.GetEncoded();
 
             string encryptRow = new string(encodeText);
-            WriteFile(folderpath + textFile + "_64.txt", encryptRow);
+            using (StreamWriter sw = new StreamWriter(folderpath + textFile + "_64.txt", false, System.Text.Encoding.UTF8))
+            {
+                sw.WriteLine(encryptRow);
+            }
 
             Console.WriteLine("Check Encoding: ");
             Console.WriteLine(CheckEncoding(path));
             Console.WriteLine("Encoded File Info:");
-            PrintInfo(infoQuant, fileSize);
+            Console.WriteLine("Size of file = {0} bytes", fileSize);
+            Console.WriteLine("Info Quantity = {0} bytes", infoQuant / 8);
+            Console.WriteLine("Info Quantity = {0} bits\n", infoQuant);
             Console.WriteLine("My Base64 encodeing: ");
             Console.WriteLine(encryptRow);
 
             Console.WriteLine("Archived File Info:");
-            fileSize = ReadFile(folderpath + textFile + "_64.txt.bz2", characters, out totalCountCharacters);
-            Probability(characters, totalCountCharacters);
+            fileSize = GetFileSize(folderpath + textFile + "_64.txt.bz2", characters, out totalCountCharacters);
+            CountProbability(characters, totalCountCharacters);
             entropy = Entropy(characters);
-            PrintInfo(Quantity(entropy, totalCountCharacters), fileSize);
+            Console.WriteLine("Size of file = {0} bytes", fileSize);
+            Console.WriteLine("Info Quantity = {0} bytes", entropy * (totalCountCharacters / 8));
+            Console.WriteLine("Info Quantity = {0} bits\n", entropy * totalCountCharacters);
 
             Console.ReadLine();
 
         }
-        public static void Probability(Dictionary<char, double> chrcts, int totalCount)
+        public static void CountProbability(Dictionary<char, double> chrcts, int totalCount)
         {
             int countKeysDict = chrcts.Keys.Count;
             char[] keysDict = new char[countKeysDict];
@@ -93,19 +104,9 @@ namespace Task2
             return entropy;
         }
 
-        public static double Quantity(double entrp, int chrctCount)
-        {
-            return entrp * chrctCount;
-        }
 
-        public static void PrintInfo(double infoQuant, long fileSize)
-        {
-            Console.WriteLine("Size of file = {0} bytes", fileSize);
-            Console.WriteLine("Info Quantity = {0} bytes", infoQuant / 8);
-            Console.WriteLine("Info Quantity = {0} bits\n", infoQuant);
-        }
 
-        public static long ReadFile(string pathFile, Dictionary<char, double> chrcts, out int totalCountChrcts)
+        public static long GetFileSize(string pathFile, Dictionary<char, double> chrcts, out int totalCountChrcts)
         {
             FileInfo fileSize = new FileInfo(pathFile);
             int iterator;
@@ -133,13 +134,6 @@ namespace Task2
             return fileSize.Length;
         }
 
-        public static void WriteFile(string pathFile, string text)
-        {
-            using (StreamWriter sw = new StreamWriter(pathFile, false, System.Text.Encoding.UTF8))
-            {
-                sw.WriteLine(text);
-            }
-        }
         public static byte[] GetTextInBytes(string pathFile)
         {
             Encoding encode = Encoding.UTF8;
